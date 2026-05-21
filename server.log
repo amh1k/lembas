@@ -1,0 +1,5 @@
+
+> lembas@1.0.0 start
+> npx tsx src/index.ts
+
+Server running on http://localhost:3000

@@ -1,10 +1,18 @@
+// src/app.ts
 import express from "express";
-import type { Request, Response } from "express";
+import cors from "cors";
+import router from "./routes/cardRoutes.js";
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello from Express and TypeScript!");
-});
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-export { app };
+// Routes
+app.use("/api", router);
+
+app.get("/", (req, res) => {
+  res.json({ message: "Tiny Anki API is running " });
+});
+export default app;
