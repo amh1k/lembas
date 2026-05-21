@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { cardController } from "../controllers/cardController.js";
+const router = Router();
+router.post("/decks", cardController.createDeck);
+router.get("/decks", cardController.getAllDecks);
+router.post("/cards", cardController.createCard);
+router.get("/cards/due/:deckId", cardController.getDueCards);
+router.post("/cards/:id/review", cardController.reviewCard);
+router.put("/cards/:id", cardController.updateCard);
+router.delete("/cards/:id", cardController.deleteCard);
+export default router;
