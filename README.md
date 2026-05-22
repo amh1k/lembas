@@ -1,4 +1,4 @@
-# Lembas CLI 🧝
+# Lembas CLI
 
 Lembas is a Terminal-based Spaced Repetition flashcard application utilizing the robust SuperMemo 2 (SM-2) algorithm. The backend is built on **Node.js, Express, and SQLite**, fully typed with **TypeScript**.
 
@@ -14,7 +14,7 @@ The primary way to interact with the application is through **Lembas**, a fully 
 
 ---
 
-## 🚀 Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 
@@ -34,7 +34,7 @@ npm install
 
 ---
 
-## 💻 Running the App (Cross-Platform Guide)
+## Running the App (Cross-Platform Guide)
 
 The Lembas client is a Bash script (`run.sh`). The script automatically starts the Node.js API server in the background, waits for SQLite to mount, launches the interactive UI session, and gracefully kills the server when you exit.
 
@@ -80,15 +80,15 @@ If you prefer not to use the terminal UI or are testing the REST API via Postman
 
 ---
 
-## 🧠 Using Lembas
+## Using Lembas
 
 When you execute `./run.sh`, you will be greeted with the interactive menu:
 
-1. **📚 Create a new Deck**: Creates a new category for your flashcards (e.g., "Spanish Vocab", "Algorithms").
-2. **📖 View all Decks**: Retrieves your deck IDs (needed for adding cards).
-3. **📝 Add a Card to a Deck**: Creates a flashcard. It will ask for the Deck ID, the Front (question), and the Back (answer).
-4. **⏳ Get Due Cards**: Queries the SM-2 algorithm to fetch cards whose `due_date` has elapsed.
-5. **🧠 Review a Card**: This executes the SM-2 learning logic. It will ask for the Card ID and a **Quality Score (0 - 5)**:
+1. **Create a new Deck**: Creates a new category for your flashcards (e.g., "Spanish Vocab", "Algorithms").
+2. **View all Decks**: Retrieves your deck IDs (needed for adding cards).
+3. **Add a Card to a Deck**: Creates a flashcard. It will ask for the Deck ID, the Front (question), and the Back (answer).
+4. **Get Due Cards**: Queries the SM-2 algorithm to fetch cards whose `due_date` has elapsed.
+5. **Review a Card**: This executes the SM-2 learning logic. It will ask for the Card ID and a **Quality Score (0 - 5)**:
    - `0-2`: Failed (Forgot the answer). Will reset repetitions and interval to 1 day.
    - `3`: Passed, but it was difficult.
    - `4`: Passed with hesitation.
@@ -98,7 +98,7 @@ When you execute `./run.sh`, you will be greeted with the interactive menu:
 
 ---
 
-## 🏗️ Architecture Details
+## Architecture Details
 
 - `/run.sh`: Client UI Loop, JSON formatting scripts, and Process Lifecycle Management.
 - `src/app.ts`: Wires together standard backend mechanics including `cors` and the router.
