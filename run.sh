@@ -8,7 +8,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # --- Node.js Helpers (No 'jq' dependency required!) ---
-# 1. Safely builds JSON payloads from bash arguments to prevent injection/quote breaking
+# Safely builds JSON payloads from bash arguments to prevent injection/quote breaking
 make_json() {
     node -e "
         const args = process.argv.slice(1);
@@ -22,7 +22,7 @@ make_json() {
     " "$@"
 }
 
-# 2. Pretty-prints JSON responses from the API
+# Pretty-prints JSON responses from the API
 format_json() {
     node -e "let d=''; process.stdin.on('data', c => d+=c); process.stdin.on('end', () => { try { console.log(JSON.stringify(JSON.parse(d), null, 2)); } catch(e) { console.log(d); } });"
 }
@@ -59,9 +59,12 @@ while true; do
     echo "3. 📝 Add a Card to a Deck"
     echo "4. ⏳ Get Due Cards (Review Queue)"
     echo "5. 🧠 Review a Card (Submit Score 0-5)"
+    echo "6. ✏️  Update a Card"
+    echo "7. 🗑️  Delete a Card"
+    echo "8. 💣 Reset Database (Delete Everything)"
     echo "0. 🚪 Exit"
     echo -e "${GREEN}=========================================${NC}"
-    read -p "Choose an option: " choice
+    read -r -p "Choose an option: " choice
 
     case $choice in
         1)
@@ -93,6 +96,35 @@ while true; do
             payload=$(make_json "quality" "$quality")
             echo -e "${CYAN}Processing SM-2 Algorithm...${NC}"
             curl -s -X POST "$BASE_URL/cards/$card_id/review" -H "Content-Type: application/json" -d "$payload" | format_json
+            ;;
+        6)
+            read -r -p "Enter Card ID to update: " card_id
+            read -r -p "Enter new Front (Question): " front
+            read -r -p "Enter new Back (Answer): " back
+            payload=$(make_json "front" "$front" "back" "$back")
+            echo -e "${CYAN}Updating card...${NC}"
+            curl -s -X PUT "$BASE_URL/cards/$card_id" -H "Content-Type: application/json" -d "$payload" | format_json
+            ;;
+        7)
+            read -r -p "Enter Card ID to delete: " card_id
+            echo -e "${YELLOW}⚠️  This cannot be undone.${NC}"
+            read -r -p "Are you sure? (y/n): " confirm
+            if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+                echo -e "${CYAN}Deleting card...${NC}"
+                curl -s -X DELETE "$BASE_URL/cards/$card_id" | format_json
+            else
+                echo -e "${YELLOW}Deletion cancelled.${NC}"
+            fi
+            ;;
+        8)
+            echo -e "${RED}⚠️  WARNING: This will permanently delete ALL decks and cards.${NC}"
+            read -r -p "Type 'RESET' to confirm: " confirm
+            if [[ "$confirm" == "RESET" ]]; then
+                echo -e "${CYAN}Resetting database...${NC}"
+                curl -s -X POST "$BASE_URL/reset" | format_json
+            else
+                echo -e "${YELLOW}Reset cancelled.${NC}"
+            fi
             ;;
         0)
             echo -e "${YELLOW}👋 Namárië! (Farewell) Keep learning.${NC}"

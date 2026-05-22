@@ -98,4 +98,11 @@ export const cardController = {
     CardModel.deleteCard(cardId);
     res.json({ message: "Card deleted", id: cardId });
   },
+  // Add to cardController object
+  resetDatabase: (req: Request, res: Response) => {
+    CardModel.resetDatabase();
+    res.json({
+      message: "Database reset successfully. All decks and cards deleted.",
+    });
+  },
 };

@@ -8,4 +8,5 @@ router.get("/cards/due/:deckId", cardController.getDueCards);
 router.post("/cards/:id/review", cardController.reviewCard);
 router.put("/cards/:id", cardController.updateCard);
 router.delete("/cards/:id", cardController.deleteCard);
+router.post("/reset", cardController.resetDatabase);
 export default router;

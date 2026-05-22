@@ -66,4 +66,11 @@ export const CardModel = {
       result.due_date,
       id,
     ),
+  resetDatabase: () => {
+    db.exec(`
+      DELETE FROM cards;
+      DELETE FROM decks;
+      DELETE FROM sqlite_sequence WHERE name='cards' OR name='decks';
+    `);
+  },
 };
