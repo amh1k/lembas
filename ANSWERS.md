@@ -36,7 +36,7 @@ The script automatically installs npm dependencies, initializes a local SQLite d
 ## 3. One real edge case
 
 **Edge Case:** The SM-2 Easiness Factor (EF) Mathematical Floor
-**Location:** `src/models/sm2.ts`, line ~21
+**Location:** `src/models/sm2.ts`, line 17
 
 **Explanation:** The SM-2 spaced repetition algorithm adjusts a card's "Easiness Factor" based on user recall quality. If a user repeatedly fails a card (submitting low scores like 0 or 1), the mathematical formula will eventually drive the EF below `1.0`. Without handling, an EF below 1.0 breaks the interval multiplier (`interval * EF`), resulting in negative or zero-day intervals. This corrupts the scheduling queue and causes SQL date-parsing errors when calculating the next due date.
 
@@ -51,7 +51,7 @@ AI was used as an orchestrator for boilerplate generation and shell scripting, w
 - **Boilerplate Scaffolding:** Asked Antigravity to generate the standard Express MVC folder structure and basic CRUD route templates.
   - _What I changed:_ Antigravity generated a monolithic `server.ts` file combining middleware, routes, and the HTTP listener. I manually refactored this into separate `app.ts` (Express configuration) and `index.ts` (server binding) files. I made this change because separating concerns is an industry best practice that allows the Express app to be imported into testing frameworks later without accidentally spinning up a live server. All generated boilerplate was reviewed line-by-line for security and correctness before integration.
 - **Bash CLI Scripting:** Asked Antigravity to generate the majority of the `run.sh` interactive CLI wrapper, including the menu loop, `curl` commands, and process lifecycle management.
-  - _What I changed:_ Antigravity’s initial script relied on `jq` for JSON formatting, which would break on fresh machines without it installed. I replaced all `jq` calls with inline `node -e` helper functions (`make_json` and `format_json`) to guarantee zero external dependencies. I also added the `trap cleanup` handler to prevent zombie processes, which the AI output initially omitted. The final script was manually tested across macOS, Linux, and Windows Git Bash.
+  - _What I changed:_ Antigravity’s initial script relied on `jq` for JSON formatting, which would break on fresh machines without it installed. I replaced all `jq` calls with inline `node -e` helper functions (`make_json` and `format_json`) to guarantee zero external dependencies. I also added the `trap cleanup` handler to prevent zombie processes, which the AI output initially omitted. The final script was manually tested in linux (should also work on Mac and Windows).
 - **SM-2 Algorithm Reference:** Asked Antigravity to explain the SM-2 spaced repetition formula and provide a reference TypeScript implementation.
   - _What I changed:_ Antigravity’s initial implementation used JavaScript’s native `Date()` and local timezone methods to calculate the next review date. I rewrote this entirely to strictly use UTC ISO strings (`nextDueDate.toISOString()`) and UTC date math. Native `Date()` relies on the host machine's local timezone; if the reviewer's machine is in a different timezone, a card due "today" could incorrectly shift to "tomorrow" due to offset math. Forcing UTC prevents timezone drift in the scheduling queue. The final algorithm was manually validated against the original SM-2 research paper.
 
