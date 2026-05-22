@@ -1,6 +1,5 @@
-// src/models/cardModel.ts
 import db from "../config/db.js";
-import type { Card, Deck, ReviewResult } from "../types.js"; // Adjust path
+import type { Card, Deck, ReviewResult } from "../types.js";
 
 const stmts = {
   createDeck: db.prepare("INSERT INTO decks (name) VALUES (?)"),
@@ -32,14 +31,12 @@ const stmts = {
 };
 
 export const CardModel = {
-  // --- DECKS ---
   createDeck: (name: string) => stmts.createDeck.run(name),
   getAllDecks: (): Deck[] => stmts.getAllDecks.all() as Deck[],
   getDeckById: (id: number): Deck | undefined =>
     stmts.getDeckById.get(id) as Deck | undefined,
   deleteDeck: (id: number) => stmts.deleteDeck.run(id),
 
-  // --- CARDS ---
   createCard: (deck_id: number, front: string, back: string) =>
     stmts.createCard.run(deck_id, front, back),
 
@@ -54,7 +51,6 @@ export const CardModel = {
 
   deleteCard: (id: number) => stmts.deleteCard.run(id),
 
-  // --- SRS LOGIC ---
   getDueCards: (deck_id: number): Card[] =>
     stmts.getDueCards.all(deck_id) as Card[],
 

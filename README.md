@@ -94,7 +94,7 @@ When you execute `./run.sh`, you will be greeted with the interactive menu:
    - `4`: Passed with hesitation.
    - `5`: Perfect recall.
      _The interval, repetitions, and easiness factor will multiply and extend the time until you next see the card._
-6. **🚪 Exit**: Closes the application and immediately shuts down the background Node process.
+6. **Exit**: Closes the application and immediately shuts down the background Node process.
 
 ---
 

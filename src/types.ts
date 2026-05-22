@@ -1,5 +1,3 @@
-// src/types.ts
-
 export interface Deck {
   id: number;
   name: string;
